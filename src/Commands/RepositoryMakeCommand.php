@@ -9,9 +9,9 @@
 namespace IsaacKenEarl\DoctrineRepoGenerator\Commands;
 
 
-use Illuminate\Console\Command;
+use Illuminate\Console\GeneratorCommand;
 
-class RepositoryMakeCommand extends Command
+class RepositoryMakeCommand extends GeneratorCommand
 {
     /**
      * The name and signature of the console command.
@@ -21,6 +21,13 @@ class RepositoryMakeCommand extends Command
     protected $signature = 'doctrine:make:repository';
 
     /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
+    protected $type = 'Repository';
+
+    /**
      * The console command description.
      *
      * @var string
@@ -28,13 +35,19 @@ class RepositoryMakeCommand extends Command
     protected $description = 'Generates a Doctrine repository';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
+     * @var string
      */
-    public function __construct()
+    private $repoName;
+
+    /**
+     * Alias for the fire method.
+     *
+     * In Laravel 5.5 the fire() method has been renamed to handle().
+     * This alias provides support for both Laravel 5.4 and 5.5.
+     */
+    public function handle()
     {
-        parent::__construct();
+        $this->fire();
     }
 
     /**
@@ -42,8 +55,20 @@ class RepositoryMakeCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function fire()
     {
-        $this->alert('hey');
+        $this->repoName = $this->argument('name');
+        $this->makeRepository();
+        $this->generateServiceProvider();
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        // TODO: Implement getStub() method.
     }
 }
