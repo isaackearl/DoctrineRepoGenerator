@@ -1,0 +1,11 @@
+<?php
+
+namespace {{namespace}}Repositories\Doctrine;
+
+use Doctrine\ORM\EntityRepository;
+use {{namespace}}Repositories\Interfaces\{{name}}Repository;
+
+class Doctrine{{name}}Repository extends EntityRepository implements {{name}}Repository
+{
+
+}
