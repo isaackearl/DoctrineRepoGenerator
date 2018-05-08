@@ -12,3 +12,6 @@ php:
 
 install:
   - composer install -n
+
+script:
+  - echo
