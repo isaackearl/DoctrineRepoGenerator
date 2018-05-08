@@ -1,0 +1,23 @@
+<?php
+
+namespace {{namespace}}Repositories\Doctrine;
+
+use Doctrine\Common\Persistence\ObjectRepository;
+use {{namespace}}Repositories\Interfaces\{{name}}Repository;
+
+class Doctrine{{name}}Repository implements {{name}}Repository
+{
+
+    private ${{lowercaseName}}Repository;
+
+    public function __construct(ObjectRepository ${{lowercaseName}}Repository)
+    {
+        $this->{{lowercaseName}}Repository = ${{lowercaseName}}Repository;
+    }
+
+    public function find($id)
+    {
+        return $this->{{lowercaseName}}Repository->find($id);
+    }
+
+}

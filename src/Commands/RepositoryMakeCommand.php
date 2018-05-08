@@ -21,7 +21,7 @@ class RepositoryMakeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'doctrine:make:repository {name}';
+    protected $signature = 'doctrine:make:repository {name} {--inheritance} {--provider}';
 
     /**
      * The console command description.
@@ -79,7 +79,9 @@ class RepositoryMakeCommand extends Command
         $this->repoName = $this->normalizeName($this->argument('name'));
         $this->makeRepositoryInterface();
         $this->makeDoctrineRepository();
-        $this->generateServiceProvider();
+        if ($this->option('provider')) {
+            $this->generateServiceProvider();
+        }
         $this->composer->dumpAutoloads();
     }
 
@@ -110,24 +112,6 @@ class RepositoryMakeCommand extends Command
     }
 
     /**
-     * Generate the desired repository interface.
-     */
-    protected function generateServiceProvider()
-    {
-        if ($this->files->exists($path = $this->getServiceProviderPath())) {
-            $this->warn('Service provider already exists.  You must add this repository to the service provider manually.');
-            $this->warn('Register the repository here: ' . $this->getAppNamespace() . 'Repositories\\Providers\\RepositoryServiceProvider.php');
-            return;
-        }
-
-        $this->makeDirectory($path);
-        $this->files->put($path, $this->compileProviderStub());
-        $this->info('Service Provider created successfully.');
-        $this->warn('Don\'t forget to add the service provider to app.php with this line:');
-        $this->warn($this->getAppNamespace() . 'Repositories\\Providers\\RepositoryServiceProvider::class');
-    }
-
-    /**
      * Get the path to where we should store the migration.
      *
      * @param  string $name
@@ -136,16 +120,6 @@ class RepositoryMakeCommand extends Command
     protected function getInterfacePath($name)
     {
         return base_path() . '/app/Repositories/Interfaces/' . $name . 'Repository.php';
-    }
-
-    /**
-     * Get the path to where we should store the migration.
-     *
-     * @return string
-     */
-    protected function getServiceProviderPath()
-    {
-        return base_path() . '/app/Repositories/Providers/RepositoryServiceProvider.php';
     }
 
     /**
@@ -175,19 +149,6 @@ class RepositoryMakeCommand extends Command
     }
 
     /**
-     * Compile the migration stub.
-     *
-     * @return string
-     */
-    protected function compileProviderStub()
-    {
-        $stub = $this->files->get(__DIR__ . '/../stubs/serviceprovider.stub');
-        $stub = $this->replaceClassName($stub);
-        $stub = $this->replaceNamespace($stub);
-        return $stub;
-    }
-
-    /**
      * Replace the class name in the stub.
      *
      * @param  string $stub
@@ -196,6 +157,17 @@ class RepositoryMakeCommand extends Command
     protected function replaceClassName(&$stub)
     {
         return str_replace('{{name}}', $this->repoName, $stub);
+    }
+
+    /**
+     * Replace the class name in the stub.
+     *
+     * @param  string $stub
+     * @return string
+     */
+    protected function replaceLowercaseName(&$stub)
+    {
+        return str_replace('{{lowercaseName}}', strtolower($this->repoName), $stub);
     }
 
     /**
@@ -250,7 +222,57 @@ class RepositoryMakeCommand extends Command
      */
     protected function compileRepositoryStub()
     {
-        $stub = $this->files->get(__DIR__ . '/../stubs/repository.stub');
+        if ($this->option('inheritance')) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceRepository.stub');
+        } else {
+            $stub = $this->files->get(__DIR__ . '/../stubs/compositionRepository.stub');
+            $stub = $this->replaceLowercaseName($stub);
+        }
+        $stub = $this->replaceClassName($stub);
+        $stub = $this->replaceNamespace($stub);
+        return $stub;
+    }
+
+    /**
+     * Generate the desired repository interface.
+     */
+    protected function generateServiceProvider()
+    {
+        if ($this->files->exists($path = $this->getServiceProviderPath())) {
+            $this->warn('Service provider already exists.  You must add this repository to the service provider manually.');
+            $this->warn('Register the repository here: ' . $this->getAppNamespace() . 'Repositories\\Providers\\RepositoryServiceProvider.php');
+            return;
+        }
+
+        $this->makeDirectory($path);
+        $this->files->put($path, $this->compileProviderStub());
+        $this->info('Service Provider created successfully.');
+        $this->warn('Don\'t forget to add the service provider to app.php with this line:');
+        $this->warn($this->getAppNamespace() . 'Repositories\\Providers\\RepositoryServiceProvider::class');
+    }
+
+    /**
+     * Get the path to where we should store the migration.
+     *
+     * @return string
+     */
+    protected function getServiceProviderPath()
+    {
+        return base_path() . '/app/Repositories/Providers/RepositoryServiceProvider.php';
+    }
+
+    /**
+     * Compile the migration stub.
+     *
+     * @return string
+     */
+    protected function compileProviderStub()
+    {
+        if ($this->option('inheritance')) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceServiceProvider.stub');
+        } else {
+            $stub = $this->files->get(__DIR__ . '/../stubs/compositionServiceProvider.stub');
+        }
         $stub = $this->replaceClassName($stub);
         $stub = $this->replaceNamespace($stub);
         return $stub;
