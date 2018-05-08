@@ -1,5 +1,5 @@
 {
-    "name": "IsaacKenEarl/laravel-doctrine-generators",
+    "name": "isaackearl/laravel-doctrine-generators",
     "type": "library",
     "description": "A set of generators for Laravel Doctrine",
     "keywords": [
@@ -9,7 +9,7 @@
         "generators",
         "laravel-doctrine-generators"
     ],
-    "homepage": "https://github.com/IsaacKenEarl/laravel-doctrine-generators",
+    "homepage": "https://github.com/isaackearl/laravel-doctrine-generators",
     "license": "MIT",
     "authors": [
         {
