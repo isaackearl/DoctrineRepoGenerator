@@ -1,10 +1,10 @@
 <?php
 
-namespace IsaacKenEarl\DoctrineRepoGenerator;
+namespace IsaacKenEarl\DoctrineGenerator;
 
 use Illuminate\Support\ServiceProvider;
 
-class DoctrineRepoGeneratorServiceProvider extends ServiceProvider
+class DoctrineGeneratorServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -29,8 +29,9 @@ class DoctrineRepoGeneratorServiceProvider extends ServiceProvider
     private function registerRepositoryGenerator()
     {
         $this->app->singleton('command.isaackenearl.repo', function ($app) {
-            return $app['IsaacKenEarl\DoctrineRepoGenerator\Commands\RepositoryMakeCommand'];
+            return $app['IsaacKenEarl\DoctrineGenerator\Commands\RepositoryMakeCommand'];
         });
+
         $this->commands('command.isaackenearl.repo');
     }
 }

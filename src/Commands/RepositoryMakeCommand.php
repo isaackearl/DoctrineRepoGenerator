@@ -6,7 +6,7 @@
  * Time: 1:11 AM
  */
 
-namespace IsaacKenEarl\DoctrineRepoGenerator\Commands;
+namespace IsaacKenEarl\DoctrineGenerator\Commands;
 
 
 use Illuminate\Console\Command;

@@ -1,12 +1,15 @@
 {
-    "name": "IsaacKenEarl/DoctrineRepoGenerator",
+    "name": "IsaacKenEarl/laravel-doctrine-generators",
     "type": "library",
     "description": "A set of generators for Laravel Doctrine",
     "keywords": [
         "IsaacKenEarl",
-        "DoctrineRepoGenerator"
+        "laravel",
+        "doctrine",
+        "generators",
+        "laravel-doctrine-generators"
     ],
-    "homepage": "https://github.com/IsaacKenEarl/DoctrineRepoGenerator",
+    "homepage": "https://github.com/IsaacKenEarl/laravel-doctrine-generators",
     "license": "MIT",
     "authors": [
         {
@@ -26,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "IsaacKenEarl\\DoctrineRepoGenerator\\": "src"
+            "IsaacKenEarl\\DoctrineGenerator\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "IsaacKenEarl\\DoctrineRepoGenerator\\": "tests"
+            "IsaacKenEarl\\DoctrineGenerator\\": "tests"
         }
     },
     "scripts": {
@@ -45,7 +48,7 @@
         },
         "laravel": {
             "providers": [
-                "IsaacKenEarl\\DoctrineRepoGenerator\\DoctrineRepoGeneratorServiceProvider"
+                "IsaacKenEarl\\DoctrineGenerator\\DoctrineGeneratorServiceProvider"
             ]
         }
     },
