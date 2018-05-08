@@ -1,6 +1,6 @@
 <?php
 
-namespace {{namespace}}\Repositories\Interfaces;
+namespace {{namespace}}Repositories\Interfaces;
 
 interface {{name}}Repository
 {

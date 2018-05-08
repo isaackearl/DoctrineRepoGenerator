@@ -1,0 +1,40 @@
+<?php
+
+namespace {{namespace}}Repositories\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use {{namespace}}Entities\{{name}};
+use {{namespace}}Repositories\Doctrine\Doctrine{{name}}Repository;
+use {{namespace}}Repositories\Interfaces\{{name}}Repository;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind({{name}}Repository::class, function ($app) {
+            return new Doctrine{{name}}Repository(
+                $app['em'],
+                $app['em']->getClassMetaData({{name}}::class)
+            );
+        });
+
+       // use the example above to make the next one
+    }
+
+}
