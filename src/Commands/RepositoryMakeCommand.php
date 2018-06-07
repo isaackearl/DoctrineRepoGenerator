@@ -268,7 +268,7 @@ class RepositoryMakeCommand extends Command
      */
     protected function compileProviderStub()
     {
-        if ($this->option('inheritance')) {
+        if ($this->option('composition')) {
             $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceServiceProvider.stub');
         } else {
             $stub = $this->files->get(__DIR__ . '/../stubs/compositionServiceProvider.stub');
