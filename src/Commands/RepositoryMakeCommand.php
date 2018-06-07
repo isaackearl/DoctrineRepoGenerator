@@ -21,7 +21,7 @@ class RepositoryMakeCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'doctrine:make:repository {name} {--inheritance} {--provider}';
+    protected $signature = 'doctrine:make:repository {name} {--composition} {--provider}';
 
     /**
      * The console command description.
@@ -160,17 +160,6 @@ class RepositoryMakeCommand extends Command
     }
 
     /**
-     * Replace the class name in the stub.
-     *
-     * @param  string $stub
-     * @return string
-     */
-    protected function replaceLowercaseName(&$stub)
-    {
-        return str_replace('{{lowercaseName}}', strtolower($this->repoName), $stub);
-    }
-
-    /**
      * @param string $stub
      * @return string
      */
@@ -222,15 +211,26 @@ class RepositoryMakeCommand extends Command
      */
     protected function compileRepositoryStub()
     {
-        if ($this->option('inheritance')) {
-            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceRepository.stub');
-        } else {
+        if ($this->option('composition')) {
             $stub = $this->files->get(__DIR__ . '/../stubs/compositionRepository.stub');
             $stub = $this->replaceLowercaseName($stub);
+        } else {
+            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceRepository.stub');
         }
         $stub = $this->replaceClassName($stub);
         $stub = $this->replaceNamespace($stub);
         return $stub;
+    }
+
+    /**
+     * Replace the class name in the stub.
+     *
+     * @param  string $stub
+     * @return string
+     */
+    protected function replaceLowercaseName(&$stub)
+    {
+        return str_replace('{{lowercaseName}}', strtolower($this->repoName), $stub);
     }
 
     /**
@@ -269,9 +269,9 @@ class RepositoryMakeCommand extends Command
     protected function compileProviderStub()
     {
         if ($this->option('composition')) {
-            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceServiceProvider.stub');
-        } else {
             $stub = $this->files->get(__DIR__ . '/../stubs/compositionServiceProvider.stub');
+        } else {
+            $stub = $this->files->get(__DIR__ . '/../stubs/inheritanceServiceProvider.stub');
         }
         $stub = $this->replaceClassName($stub);
         $stub = $this->replaceNamespace($stub);
